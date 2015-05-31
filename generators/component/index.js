@@ -11,8 +11,8 @@ module.exports = yeoman.generators.Base.extend({
 	prompting: function () {
 		var done = this.async();
 
-		this.external = this.options.external;
-		this.args = this.options.args;
+		this.external = this.options.external || {};
+		this.args = this.args || this.options.args || [];
 
 		if (!this.args || !this.args.length) {
 			// Have Yeoman greet the user.

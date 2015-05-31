@@ -60,7 +60,13 @@ module.exports = yeoman.generators.Base.extend({
 
 		helloworld: function () {
 			if (this.props.helloworld) {
-				this.composeWith("88mph:helloworld");
+				this.composeWith("88mph:helloworld", {
+					options: { 
+						external: { 
+							appname: this.appname 
+						}
+					} 
+				});
 			}
 		},
 
