@@ -11,7 +11,6 @@ var buffer = require("vinyl-buffer");
 var rename = require("gulp-rename");
 var sourcemaps = require("gulp-sourcemaps");
 var watchify = require("watchify");
-var _ = require("lodash");
 var uglify = require("gulp-uglify");
 var browserSync = require("browser-sync").create()
 
@@ -20,9 +19,8 @@ var appPath = "app";
 // destination path
 var destPath = "build";
 
-// if we are watching or not
+// if we are watching
 var watch = false;
-var error = false;
 
 // our source files
 var src = {
@@ -37,16 +35,19 @@ gulp.task("default", ["build"]);
 // main build task
 gulp.task("build", ["html", "sass", "images", "scripts"]);
 
-// our watch task to watch files and perform other tasks
-gulp.task("watch", ["pre-watch", "build", "serve"], function () {
-	gulp.watch(src.webpages, ["html"]).on("change", browserSync.reload);
-	gulp.watch(src.sass, ["sass"]);
-	gulp.watch(src.images, ["images"]);
-});
-
-// before we watch
+// called before watch starts
 gulp.task("pre-watch", function () {
 	watch = true;
+});
+
+// our watch task to watch files and perform other tasks
+gulp.task("watch", ["pre-watch", "build"], function () {
+	gulp.watch(src.webpages, ["html"]).on("change", function () {
+		//if (browserSync.active)
+			browserSync.reload();
+	});
+	gulp.watch(src.sass, ["sass"]);
+	gulp.watch(src.images, ["images"]);
 });
 
 // called to move any HTML documents into the destination folder
@@ -96,6 +97,7 @@ gulp.task("scripts", function () {
 		debug: true,
 		transform: [babelify]
 	});
+	
 	// our javascript bundler
 	var bundler = (watch) ? watchify(bro) : bro;
 
@@ -107,13 +109,21 @@ gulp.task("scripts", function () {
 
 	// our rebundle function
 	function rebundle(bundler) {
+		util.log("Browserify is bundling...");
+		// tell browserify we are compiling
+		browserSync.notify("Browserify is bundling...");
+		// default bundler to not have an error
 		bundler.error = false;
+		// send our bundler bundle back
 		return bundler.bundle()
 			.on("error", function (error) {
 				// set bundler error to true to check for later
 				bundler.error = true;
 				// beep and give us the error
 				util.beep();
+				// tell browserify we got an error
+				browserSync.notify("Browserify Error!");
+				// log the message
 				console.log(
 					chalk.gray("\n====================================\n") +
 					"[" + chalk.blue("Browserify") + "] " + chalk.red.bold("Error") +
@@ -137,6 +147,10 @@ gulp.task("scripts", function () {
 			.on("end", function () {
 				// don't do anything if we have an error
 				if (!bundler.error) { 
+					// we are done bundling
+					util.log("Browserify finished bundling!");
+					// tell browserify we got an error
+					browserSync.notify("Browserify finished bundling!");
 					// uglify the file
 					gulp.src(destPath + "/js/app.js")
 						.pipe(uglify())
@@ -144,7 +158,7 @@ gulp.task("scripts", function () {
 						.pipe(gulp.dest(destPath + "/js"));
 
 					// tell browser sync to reload the page
-					watch && browserSync.reload();
+					browserSync.reload();
 				}
 			});
 	}
@@ -154,7 +168,7 @@ gulp.task("scripts", function () {
 });
 
 // called to serve the files on localhost
-gulp.task("serve", ["build"], function () {
+gulp.task("serve", ["watch"], function () {
 	// initialize browser sync
 	browserSync.init({ server: destPath });
 });

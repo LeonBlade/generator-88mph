@@ -3,17 +3,13 @@
 var yeoman = require("yeoman-generator");
 var yosay = require("yosay");
 var chalk = require("chalk");
-var _ = require("lodash");
 var _s = require("underscore.string");
 
 module.exports = yeoman.generators.Base.extend({
 
 	initializing: function () {
-		this.rename = false;
-
 		if (this.options.external) {
 			this.appname = this.options.external.appname;
-			this.rename = true;
 		}
 		else if (this.fs.exists(this.destinationPath("package.json"))) {
 			var destPackage = this.fs.readJSON(this.destinationPath("package.json"));
@@ -55,7 +51,7 @@ module.exports = yeoman.generators.Base.extend({
 		html: function () {
 			this.fs.copyTpl(
 				this.templatePath("../../app/templates/_index.html"),
-				this.destinationPath("app/" + ((this.rename) ? "helloworld" : "index") + ".html"),
+				this.destinationPath("app/index.html"),
 				{
 					appname: this.appname,
 					helloworld: true,
@@ -72,7 +68,7 @@ module.exports = yeoman.generators.Base.extend({
 		app: function () {
 			this.fs.copyTpl(
 				this.templatePath("../../app/templates/_app.js"),
-				this.destinationPath("app/js/" + ((this.rename) ? "helloworld" : "app") + ".js"),
+				this.destinationPath("app/js/app.js"),
 				{
 					appname: this.appname,
 					helloworld: true,

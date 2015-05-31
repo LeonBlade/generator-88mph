@@ -3,7 +3,6 @@
 var yeoman = require("yeoman-generator");
 var yosay = require("yosay");
 var chalk = require("chalk");
-var _ = require("lodash");
 var _s = require("underscore.string");
 
 module.exports = yeoman.generators.Base.extend({
@@ -12,7 +11,7 @@ module.exports = yeoman.generators.Base.extend({
 		var done = this.async();
 
 		this.external = this.options.external || {};
-		this.args = this.args || this.options.args || [];
+		this.args = this.options.args || this.args || [];
 
 		if (!this.args.length) {
 			// Have Yeoman greet the user.
