@@ -1,0 +1,81 @@
+@import url("http://fonts.googleapis.com/css?family=Roboto:100,900");
+@import url("//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css");
+
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	overflow: hidden;
+}
+
+body {
+	font-family: "Roboto";
+	background: #000;
+	color: white;
+	text-shadow: 0 1px 0px #000;
+	z-index: 1;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+}
+
+body:before {
+	content: close-quote;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -1;
+	background: url(/images/bttf.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+	opacity: 0.5;
+}
+
+h1 {
+	font-weight: 900;
+	text-transform: capitalize;
+}
+
+h2 {
+	font-weight: 100;
+}
+
+.container {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+.ghost {
+	min-width: 100px;
+	padding: 15px 20px;
+	color: white;
+	text-transform: uppercase;
+	border: 2px solid white;
+	background: transparent;
+	border-radius: 2px;
+	font-weight: 900;
+	outline: none;
+	cursor: pointer;
+}
+
+$ghost-btn-color: #FF5253;
+
+.ghost:hover,
+.ghost:focus,
+.ghost:active {
+	border-color: $ghost-btn-color;
+	background-color: $ghost-btn-color;
+	color: white;
+}

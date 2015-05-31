@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title><%= _s.titleize(_s.humanize(appname)) %></title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1"><% if (helloworld) { %>
+		<link rel="stylesheet" href="css/app.css" /><% } %>
+	</head>
+
+	<body>
+
+		<div class="container">
+			<h1><%= _s.titleize(_s.humanize(appname)) %></h1>
+			<!-- here is where our component will render -->
+			<div id="app"></div>
+		</div>
+
+		<!-- script tag at the end of the body as a ready state -->
+		<script src="js/app.js"></script>
+
+	</body>
+	
+</html>
