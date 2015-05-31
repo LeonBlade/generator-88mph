@@ -23,7 +23,7 @@ module.exports = yeoman.generators.Base.extend({
 				name: "appname",
 				type: "input",
 				message: "What's the name of your app?",
-				default: this.appname
+				default: _s.slugify(this.appname)
 			},
 			{
 				name: "helloworld",
